@@ -129,9 +129,19 @@ for (i = 1; i < 6; i++) {
             });
 };
 
-var cval;
+        
+var cval,q;
 d3.selectAll("td").on('click',function(d) {
     cval = d3.select(this).classed("greyout");
     t = d3.select(this).attr("id").substring(0,1);
     d3.selectAll(".Team"+t).classed("greyout",!cval);
+    
+    if (d3.select(this).classed("question")) {
+        q = d3.select(this).attr("class").match(/[Q][u][e][-](\d*[AB]{0,1})/)[1]
+        console.log(q);
+        cval = d3.select(this).classed("active");
+        d3.selectAll(".active").classed("active",false);
+        d3.selectAll(".Que-"+q).classed("active", !cval)
+    }
+    
 });
