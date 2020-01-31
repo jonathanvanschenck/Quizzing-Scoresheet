@@ -1,0 +1,70 @@
+.window {
+    width: 100vh;
+    height: 80vh;
+    background: #bbbbbb;
+
+}
+
+td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+.rotate2 {
+  /* FF3.5+ */
+  -moz-transform: rotate(-90.0deg);
+  /* Opera 10.5 */
+  -o-transform: rotate(-90.0deg);
+  /* Saf3.1+, Chrome */
+  -webkit-transform: rotate(-90.0deg);
+  /* IE6,IE7 */
+  filter: progid: DXImageTransform.Microsoft.BasicImage(rotation=0.083);
+  /* IE8 */
+  -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0.083)";
+  /* Standard */
+  transform: rotate(-90.0deg);
+}
+.rotate {
+    -webkit-transform: rotate(-180deg);        
+    -moz-transform: rotate(-180deg);            
+    -ms-transform: rotate(-180deg);         
+    -o-transform: rotate(-180deg);         
+    transform: rotate(-180deg);
+    writing-mode: vertical-lr;
+    padding: 24px;
+}
+
+.TeamA {
+    --bg-r: 255;
+    --bg-g: 100;
+    --bg-b: 100;
+    background: rgb(var(--bg-r),var(--bg-b),var(--bg-g));
+}
+.TeamB {
+    --bg-r: 100;
+    --bg-g: 255;
+    --bg-b: 100;
+    background: rgb(var(--bg-r),var(--bg-b),var(--bg-g));
+}
+.TeamC {
+    --bg-r: 150;
+    --bg-g: 150;
+    --bg-b: 255;
+    background: rgb(var(--bg-r),var(--bg-b),var(--bg-g));
+}
+
+.bar {
+    background: rgb(calc(calc(4*var(--bg-r))/5),
+                    calc(calc(4*var(--bg-g))/5),
+                    calc(calc(4*var(--bg-b))/5));
+}
+
+.question {
+    background: rgb(calc(calc(5*var(--bg-r))/5),
+                    calc(calc(5*var(--bg-g))/5),
+                    calc(calc(5*var(--bg-b))/5));
+}
+                    
+.greyout {
+    opacity: 0.5;
+}
