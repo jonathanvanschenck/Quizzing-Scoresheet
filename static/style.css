@@ -1,13 +1,20 @@
 .window {
-    width: 100vh;
-    height: 80vh;
     background: #bbbbbb;
-
 }
 
 td {
     border: 1px solid black;
     border-collapse: collapse;
+}
+
+
+.menu {
+    background: rgba(255,255,255,0.0)
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+.menu-option {
+    background: rgba(255,255,255,0.8)
 }
 
 .rotate2 {
@@ -63,10 +70,33 @@ td {
     background: rgb(calc(calc(5*var(--bg-r))/5),
                     calc(calc(5*var(--bg-g))/5),
                     calc(calc(5*var(--bg-b))/5));
+    text-align: center;
+    vertical-align: middle;
+    width: 100px;
+    height: 20px;
 }
-                    
+
+.CI-box {
+    text-align: center;
+    width: 10px;
+}
+
+.start-points {
+    text-align: center;
+}
+           
+.name-input {
+    width: 80px;
+    background-color: rgba(255,255,255,0.0);
+}
+
+.team-input {
+    width: 50px;
+    text-align: center;
+    background-color: rgba(255,255,255,0.0);
+}                    
 .greyout {
-    opacity: 0.7;
+    opacity: 0.5;
 }
 
 .active {
