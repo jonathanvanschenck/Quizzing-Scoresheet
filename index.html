@@ -6,7 +6,10 @@
 </head>
 
 <body>
+    <input type="button" value="Reset Page" id="clear-button"/>
     <div class="window">
+        <table class="table" id="meta-table">
+        </table>
         <table class="table" id="table-cont">
         </table>
         <table class="menu" id="primary-menu" style="display: none;">
@@ -16,9 +19,10 @@
         <table class="menu" id="sp-menu" style="display: none;">
         </table>
     </div>
+    <input type="button" value="Render Page" id="render-button"/>
 
 
-    <script src="static/d3/d3.js"></script>
+    <script src="static/d3/d3.min.js"></script>
     <script src="static/js/script.js"></script>
 </body>
 </html>
