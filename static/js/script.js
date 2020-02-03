@@ -1,10 +1,63 @@
 setup = function() {
     var wind = d3.select(".window");
+    var mtable = d3.select("#meta-table");
     var table = d3.select("#table-cont");
     var pmenu = d3.select("#primary-menu");
     var smenu = d3.select("#secondary-menu");
     var spmenu = d3.select("#sp-menu");
     
+    
+    var data_meta_h = [{label:"",l1: "a"},{label:"",l1: "b"},
+                        {label:"",l1: "g"},{label:"Name",l1: "h"},
+                        {label:"",l1: "c"},
+                        {label:"Team",l1: "d"},{label:"Score",l1: "e"},{label:"Points",l1: "f"}]
+    
+    mtable.append('tr')
+            .classed("meta-header-row",true)
+            .selectAll("td").data(data_meta_h).enter().append('td')
+            .classed("meta-header",true)
+            .classed("empty",d => d.label==="")
+            .attr("id",d => "MH-"+d.l1)
+            .text(d => d.label);
+
+    var i, la= ["A","B","C"];
+    for (i = 0 ; i < 3 ; i++) {
+        mtable.append('tr')
+                .classed("meta-data-row",true)
+                .selectAll("td").data(data_meta_h).enter().append('td')
+                .classed("meta-data",true)
+                .attr("id",d => "M"+la[i]+"-"+d.l1);
+    }
+    
+    d3.select("#MA-a").classed("meta-bar",true).text("Meet:");
+    d3.select("#MB-a").classed("meta-bar",true).text("Room:");
+    d3.select("#MC-a").classed("meta-bar",true).text("Quiz #:");   
+    
+    d3.select("#MA-c").classed("meta-bar",true).text("First:");
+    d3.select("#MB-c").classed("meta-bar",true).text("Second:");
+    d3.select("#MC-c").classed("meta-bar",true).text("Third:");
+
+    d3.select("#MA-g").classed("meta-bar",true).text("QM:");
+    d3.select("#MB-g").classed("meta-bar",true).text("AJ:");
+    d3.select("#MC-g").classed("meta-bar",true).text("SK:");    
+    
+    mtable.selectAll(".meta-data-row").each(function (d) {
+        d3.select(this).selectAll("td").filter(function (d) {
+            return d3.select(this).attr('id').match(/[M][ABC]-([a-h])/)[1] == 'b';
+        }).each(function (d) {
+            d3.select(this).append("input").attr("type","text").classed("meta-input",true)
+        })
+    });
+    
+    mtable.selectAll(".meta-data-row").each(function (d) {
+        d3.select(this).selectAll("td").filter(function (d) {
+            return d3.select(this).attr('id').match(/[M][ABC]-([a-h])/)[1] == 'h';
+        }).each(function (d) {
+            d3.select(this).append("input").attr("type","text").classed("name-input",true)
+        })
+    });
+
+
     var data_startpoints = [{content:"__", value:""},
                            {content:"20", value:"20"}] 
     var data_pmenu = [{content:"__", value:""},
@@ -231,9 +284,15 @@ setup = function() {
     d3.selectAll('.menu-option').on("click", function(data, index) {
         var q = d3.select('.active');
         q.text(data.value);
-        update_score(q.attr("id").match("([ABC])[AF12345][-]\d*")[1]);
+        var tn = q.attr("id").match(/([ABC])[AF12345][-]\d*/)[1];
+        var qn = q.attr("id").match(/[ABC]([AF12345])[-]\d*/)[1];
+        update_score(tn);
+        if (!( qn==="H" || qn==="F")) {
+            update_CI(tn,qn);
+        }
         d3.selectAll(".active").classed("active",false);
         d3.selectAll('.menu').style('display', 'none'); 
+        update_meta();
     });
     
     
@@ -241,10 +300,24 @@ setup = function() {
         q = d3.select(element);
         console.log(q);
     }
-
+    
+    update_meta = function() {
+        d3.selectAll('.team-input').each(function (d) {
+            var tn = d3.select(this).attr("class").match(/Team([ABC])/)[1];
+            var score = d3.select("#"+tn+"F-20").text();
+            d3.select('#M'+tn+'-e').text(score);
+            d3.select('#M'+tn+'-d').text(d3.select("#"+tn+"H-b").select("input").attr("value"));
+            d3.select('#M'+tn+'-f').text(+score/10);
+        });
+    }
+    
     update_score("A");
     update_score("B");
     update_score("C");
+    
+    d3.select("#AF-23").on("change", update_meta());
+    d3.select("#BF-23").on("change", update_meta());
+    d3.select("#CF-23").on("change", update_meta());
 }
 
 clear = function() {
@@ -254,7 +327,7 @@ clear = function() {
 };
 
 parse_score = function (score) {
-    var sc = score.match(/[A-z]*([-]{0,1}\d*)/)[1];
+    var sc = score.match(/[A-z]{0,2}([-]{0,1}\d*)/)[1];
     if (sc === "") {
         return 0;
     } else {
@@ -268,17 +341,47 @@ update_score = function(tn) {
     //var tn = q.attr("id").match(/([ABC])F[-]\d*/)[1];
     d3.select(q.node().parentNode).selectAll(".question").each(function(d) {
         var self = d3.select(this);
-        var qn = self.attr("id").match(/[A-Z]{2}[-](\d*)/)[1];
+        var qn = self.attr("id").match(/[ABC][AF12345][-](\d*)/)[1];
         var psum = 0;
+        var update = false;
         var j;
         for (j = 1; j < 6; j++) {
-            psum += parse_score(d3.select("#"+tn+j+"-"+qn).text());
+            var pval = d3.select("#"+tn+j+"-"+qn).text();
+            if (!(pval === "")) {
+                update = true;
+            }
+            psum += parse_score(pval);
         };
         cumsum += psum
-        if (!(psum === 0) || qn === "20") {
+        if (!(psum === 0) || qn === "20" || qn === "23" || update) {
             self.text(cumsum);
+        } else {
+            self.text("");
         }
     });
 }
 
+update_CI = function(tn,qn) {
+    var csum = 0, isum = 0;
+    d3.select(d3.select("#"+tn+qn+"-c").node().parentNode).selectAll(".question").filter(function (d) {
+        return +d3.select(this).attr("id").match(/[ABC]\d*[-](\d*)/)[1] < 21;
+    }).each(function(d) {
+        var val = d3.select(this).text();
+        if (val === "20" || val === "30") {
+            csum += 1;
+        } else if (val === "E" || val === "E-10") {
+            isum += 1;
+        }
+    });
+    d3.select("#"+tn+qn+"-c").text(csum);
+    d3.select("#"+tn+qn+"-d").text(isum);
+}
+
+render = function() {
+    var d = new Date();
+    console.log(d.toLocaleDateString());
+}
+
+d3.select("#clear-button").on("click", d => clear());
+d3.select("#render-button").on("click", d => render());
 setup();
