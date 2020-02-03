@@ -78,7 +78,7 @@ td {
 
 .CI-box {
     text-align: center;
-    width: 10px;
+        
 }
 
 .start-points {
@@ -90,10 +90,29 @@ td {
     background-color: rgba(255,255,255,0.0);
 }
 
+.meta-input {
+    width: 40px;
+    background-color: rgba(0,0,0,0);
+    text-align: center;
+}
+
+.meta-data {
+    text-align: center;
+}
+.meta-bar {
+    text-align: right;
+    border: none;
+    width: 80px;
+}
+.meta-header {
+    text-align: center;
+    border: none;
+}
+
 .team-input {
     width: 50px;
     text-align: center;
-    background-color: rgba(255,255,255,0.0);
+    background-color: rgba(0,0,0,0.2);
 }                    
 .greyout {
     opacity: 0.5;
@@ -101,4 +120,8 @@ td {
 
 .active {
     background: rgb(250,250,0);
+}
+
+.empty {
+    opacity: 0.0;
 }
