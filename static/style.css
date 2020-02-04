@@ -42,34 +42,20 @@ td {
 }
 
 .TeamA {
-    --bg-r: 255;
-    --bg-g: 100;
-    --bg-b: 100;
-    background: rgb(var(--bg-r),var(--bg-b),var(--bg-g));
+    background: rgb(255,100,100);
 }
 .TeamB {
-    --bg-r: 100;
-    --bg-g: 255;
-    --bg-b: 100;
-    background: rgb(var(--bg-r),var(--bg-b),var(--bg-g));
+    background: rgb(100,255,100);
 }
 .TeamC {
-    --bg-r: 150;
-    --bg-g: 150;
-    --bg-b: 255;
-    background: rgb(var(--bg-r),var(--bg-b),var(--bg-g));
+    background: rgb(150,150,255);
 }
 
 .bar {
-    background: rgb(calc(calc(4*var(--bg-r))/5),
-                    calc(calc(4*var(--bg-g))/5),
-                    calc(calc(4*var(--bg-b))/5));
+
 }
 
 .question {
-    background: rgb(calc(calc(5*var(--bg-r))/5),
-                    calc(calc(5*var(--bg-g))/5),
-                    calc(calc(5*var(--bg-b))/5));
     text-align: center;
     vertical-align: middle;
     width: 100px;
@@ -87,12 +73,12 @@ td {
            
 .name-input {
     width: 80px;
-    background-color: rgba(255,255,255,0.0);
+    background-color: rgba(0,0,0,0.2);
 }
 
 .meta-input {
     width: 40px;
-    background-color: rgba(0,0,0,0);
+    background-color: rgba(0,0,0,0.2);
     text-align: center;
 }
 
@@ -115,7 +101,7 @@ td {
     background-color: rgba(0,0,0,0.2);
 }                    
 .greyout {
-    opacity: 0.5;
+    opacity: 0.8;
 }
 
 .active {
