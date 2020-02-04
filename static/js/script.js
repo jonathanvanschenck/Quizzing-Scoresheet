@@ -5,6 +5,7 @@ setup = function() {
     var pmenu = d3.select("#primary-menu");
     var smenu = d3.select("#secondary-menu");
     var spmenu = d3.select("#sp-menu");
+    var hmenu = d3.select("#h-menu");
     
     
     var data_meta_h = [{label:"",l1: "a"},{label:"",l1: "b"},
@@ -45,21 +46,26 @@ setup = function() {
         d3.select(this).selectAll("td").filter(function (d) {
             return d3.select(this).attr('id').match(/[M][ABC]-([a-h])/)[1] == 'b';
         }).each(function (d) {
-            d3.select(this).append("input").attr("type","text").classed("meta-input",true)
+            d3.select(this).append("input").attr("type","text")
+                .attr("id","input-"+d3.select(this).attr('id'))
+                .classed("meta-input",true)
         })
     });
     
     mtable.selectAll(".meta-data-row").each(function (d) {
         d3.select(this).selectAll("td").filter(function (d) {
             return d3.select(this).attr('id').match(/[M][ABC]-([a-h])/)[1] == 'h';
-        }).each(function (d) {
-            d3.select(this).append("input").attr("type","text").classed("name-input",true)
+        }).each(function (d,i) {
+            d3.select(this).append("input").attr("type","text")
+                .attr("id","input-"+d3.select(this).attr('id'))
+                .classed("name-input",true)
         })
     });
 
 
     var data_startpoints = [{content:"__", value:""},
                            {content:"20", value:"20"}] 
+    var data_h = [{content:"NJ", value:"|"},{content:"TF", value:"TF"}] 
     var data_pmenu = [{content:"__", value:""},
                       {content:"20", value:"20"},
                       {content:"30", value:"30"},
@@ -69,8 +75,10 @@ setup = function() {
                       {content:"B10", value:"B10"},
                       {content:"BE", value:"BE"}]
     var data_smenu = [{content:"__", value:""},
+                      {content:"NJ", value:"|"},
                       {content:"F", value:"F"},
                       {content:"F-10", value:"F-10"},
+                      {content:"TF", value:"TF"},
                       {content:"CA", value:"CA"},
                       {content:"CO", value:"CO"},
                       {content:"CO-10", value:"CO-10"}]
@@ -86,6 +94,11 @@ setup = function() {
             .classed("menu-option",true)
             .text(d => d.content);
     spmenu.selectAll("tr").data(data_startpoints).enter().append("tr")
+            .classed("menu-row",true)
+            .append("td")
+            .classed("menu-option",true)
+            .text(d => d.content);
+    hmenu.selectAll("tr").data(data_h).enter().append("tr")
             .classed("menu-row",true)
             .append("td")
             .classed("menu-option",true)
@@ -127,6 +140,7 @@ setup = function() {
             .attr("id",t+"H-b")
             .classed("bar",true)//;
             .append("input").attr("type","text")
+            .attr("id","input-"+t+"H-b")
             .classed("Team"+t,true)
             .classed("team-input",true)
             .attr("value","Team "+t);
@@ -155,6 +169,7 @@ setup = function() {
                 .attr("id",t+j+"-b")
                 .classed("bar",true)
                 .append("input").attr("type","text")
+                .attr("id","input-"+t+j+"-b")
                 .classed("name-input",true)
                 .classed("Team"+t,true)
                 .attr("value","Quizzer "+j);
@@ -262,6 +277,28 @@ setup = function() {
             }
             d3.event.preventDefault();
         });
+        
+    d3.selectAll('.question').filter(function(d) {
+            q = d3.select(this.parentNode);
+            return (q.classed("bracket-header"))
+        }).on("click", function(data, index) {
+            cval = d3.selectAll(".active").size();
+            d3.selectAll('.menu').style('display', 'none'); 
+            if (cval == 1) {
+                d3.selectAll(".active").classed("active",false);
+            } else {
+                d3.selectAll(".active").classed("active",false);
+                q = d3.select(this);
+                q.classed("active",true);
+                var position = [d3.event.pageX,d3.event.pageY];
+                
+                hmenu.style('position', 'absolute')
+                      .style('left', position[0] + "px")
+                      .style('top', position[1] + "px")
+                      .style('display', 'block');
+            }
+        });
+        
     d3.selectAll('.start-points').on("click", function(data, index) {
         cval = d3.selectAll(".active").size();
         d3.selectAll('.menu').style('display', 'none');  
@@ -278,14 +315,83 @@ setup = function() {
                   .style('top', position[1] + "px")
                   .style('display', 'block');    
         }
-        d3.event.preventDefault();
     });
+    
     
     d3.selectAll('.menu-option').on("click", function(data, index) {
         var q = d3.select('.active');
-        q.text(data.value);
-        var tn = q.attr("id").match(/([ABC])[AF12345][-]\d*/)[1];
-        var qn = q.attr("id").match(/[ABC]([AF12345])[-]\d*/)[1];
+        var tn = q.attr("id").match(/([ABC])[HF12345][-]\d*/)[1];
+        var qn = q.attr("id").match(/[ABC]([HF12345])[-]\d*/)[1];
+        var ques_num = q.attr("id").match(/[ABC][HF12345][-](\d*)/)[1];
+        if (q.text() === "TF") {
+            d3.selectAll(".question").filter(function (d) {
+                var idm = d3.select(this).attr("id").match(/([ABC])[12345][-](\d*)/);
+                if (!!idm) {
+                    return (idm[1] === tn && idm[2] === ques_num);
+                } else {
+                    return false;
+                }
+            }).text("");
+        } else if (q.text() === "|") {
+            d3.selectAll(".question").filter(function (d) {
+                var idm = d3.select(this).attr("id").match(/([ABC])[12345][-](\d*)/);
+                if (!!idm) {
+                    return idm[2] === ques_num;
+                } else {
+                    return false;
+                }
+            }).each(function (d) {
+                var self = d3.select(this);
+                if (self.text() === "|") {
+                    self.text("")
+                }
+            });
+            update_score("A");
+            update_score("B");
+            update_score("C");
+        }        
+        if (data.value === "TF") {
+            d3.selectAll(".question").filter(function (d) {
+                var idm = d3.select(this).attr("id").match(/([ABC])[12345][-](\d*)/);
+                if (!!idm) {
+                    return (idm[1] === tn && idm[2] === ques_num);
+                } else {
+                    return false;
+                }
+            }).text(data.value);
+        } else if (data.value === "|") {
+            var la = ["A","B","C"],i;
+            for (i = 0 ; i < 3 ; i++ )  {
+                var already_answered = false;
+                d3.selectAll(".question").filter(function (d) {
+                    var idm = d3.select(this).attr("id").match(/([ABC])[12345][-](\d*)/);
+                    if (!!idm) {
+                        return (idm[1] === la[i] && idm[2] === ques_num);
+                    } else {
+                        return false;
+                    }
+                }).each(function (d) {
+                    if (!(d3.select(this).text() === "")) {
+                        already_answered = true;
+                    }
+                })
+                if (!already_answered) {
+                    d3.selectAll(".question").filter(function (d) {
+                        var idm = d3.select(this).attr("id").match(/([ABC])[12345][-](\d*)/);
+                        if (!!idm) {
+                            return (idm[1] === la[i] && idm[2] === ques_num);
+                        } else {
+                            return false;
+                        }
+                    }).text("|");
+                }
+            }
+            update_score("A");
+            update_score("B");
+            update_score("C"); 
+        } else {
+            q.text(data.value);
+        }
         update_score(tn);
         if (!( qn==="H" || qn==="F")) {
             update_CI(tn,qn);
@@ -298,30 +404,86 @@ setup = function() {
     
     update_footer = function(element) {
         q = d3.select(element);
-        console.log(q);
+    }
+    
+    
+    sort_teams = function (a , b) {
+        if (a.score < b.score) {
+            return 1;
+        } else if (a.score > b.score) {
+            return -1;
+        } else {
+            if (a.score2 < b.score2) {
+                return 1;
+            } else if (a.score2 > b.score2) {
+                return -1;
+            } else {
+                return 0;
+            }
+        }
+    }
+    
+    parse_points = function (score, order) {
+        if (order === 1) {
+            return Math.max(score/10,10);
+        } else if (order === 2) {
+            return Math.max(score/10 - 1,5);
+        } else if (order === 3) {
+            return Math.max(score/10 - 2,1);
+        }
     }
     
     update_meta = function() {
-        d3.selectAll('.team-input').each(function (d) {
+        var team_list = [];
+        d3.selectAll('.team-input').each(function (d,i) {
             var tn = d3.select(this).attr("class").match(/Team([ABC])/)[1];
-            var score = d3.select("#"+tn+"F-20").text();
-            d3.select('#M'+tn+'-e').text(score);
-            d3.select('#M'+tn+'-d').text(d3.select("#"+tn+"H-b").select("input").attr("value"));
-            d3.select('#M'+tn+'-f').text(+score/10);
+            team_list.push({
+                score: +d3.select("#"+tn+"F-20").text(),
+                score2: +d3.select("#"+tn+"F-23").text(),
+                t: tn,
+                name: get_input_value(d3.select("#"+tn+"H-b").select("input")),
+                order: i+1
+            });
         });
+        team_list.sort(sort_teams);
+        var i;
+        team_list[0].order = 1;
+        for (i = 0 ; i < 2 ; i++) {
+            if (team_list[i+1].score === team_list[i].score) {
+                team_list[i+1].order = team_list[i].order
+            } else {
+                team_list[i+1].order = i+1+1;
+            }
+        }
+        d3.selectAll('.team-input').each(function (d,i) {
+            var tn = d3.select(this).attr("class").match(/Team([ABC])/)[1];
+            d3.select('#M'+tn+'-e').text(team_list[i].score)
+                .classed("TeamA",team_list[i].t === "A")
+                .classed("TeamB",team_list[i].t === "B")
+                .classed("TeamC",team_list[i].t === "C");
+            d3.select('#M'+tn+'-d').text(team_list[i].name)
+                .classed("TeamA",team_list[i].t === "A")
+                .classed("TeamB",team_list[i].t === "B")
+                .classed("TeamC",team_list[i].t === "C");
+            d3.select('#M'+tn+'-f').text(parse_points(team_list[i].score,team_list[i].order))
+                .classed("TeamA",team_list[i].t === "A")
+                .classed("TeamB",team_list[i].t === "B")
+                .classed("TeamC",team_list[i].t === "C");
+        });
+
     }
     
     update_score("A");
     update_score("B");
     update_score("C");
-    
-    d3.select("#AF-23").on("change", update_meta());
-    d3.select("#BF-23").on("change", update_meta());
-    d3.select("#CF-23").on("change", update_meta());
+    update_meta();
+}
+
+get_input_value = function (d3_input_obj) {
+    return document.getElementById(d3_input_obj.attr("id")).value;
 }
 
 clear = function() {
-    console.log("cleared");
     d3.selectAll("tr").remove();
     setup();
 };
@@ -376,6 +538,7 @@ update_CI = function(tn,qn) {
     d3.select("#"+tn+qn+"-c").text(csum);
     d3.select("#"+tn+qn+"-d").text(isum);
 }
+
 
 render = function() {
     var d = new Date();
