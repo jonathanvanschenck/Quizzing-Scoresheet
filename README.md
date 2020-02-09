@@ -33,3 +33,10 @@ Development should take place primarialy in the `index.html`, `static/style.css`
  $ python3 convert.py
  ```
  which will take `index.html` and insert the relevant `.js` and `.css` source to create the single, isolate-able `templates/scoresheet_app.html` file.
+ 
+ # Goals for the future
+ 1) Create a more "hand-holdy" version of the app, with simplified user interactions. Bascially, it will let a user say; "Quizzer 1 got a correct, then quizzer 8 got an error," and the app will keep track of the question number, 3rd persion bonuses, error outs, etc.
+ 2) Make the app look a little better?
+ 3) Make some improvements to the save file structure which would be more conducive to interfacing with other quizzing software--like cbqz.
+ 4) Stress test the app at an actual quiz meet
+ 5) Right now, there is no way to assign two states to a single quizzer's interaction with a question. That is, if a quizzer errors, then challenges and is overturned, the app cannot represent both the error and the overturned challenge at the same time. Find a good way to fix this...
