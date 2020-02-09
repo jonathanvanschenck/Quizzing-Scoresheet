@@ -18,7 +18,7 @@ with open("index.html") as f:
                 tn = len(re.findall('    ',l))
                 ff.write(tn*'    ' + '<script>\n')
                 with open(fp) as fff:
-                    if "min" in fp:
+                    if "d3.min" in fp:
                         ll = fff.readline()
                     for ll in fff:
                         ff.write((tn+1)*'    ' + ll.strip('\n') + '\n')

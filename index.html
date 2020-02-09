@@ -6,7 +6,21 @@
 </head>
 
 <body>
-    <input type="button" value="Reset Page" id="clear-button"/>
+    <h1>Options</h1>
+    <span>
+        <input class="button" type="button" value="Clear" id="clear-button"/>
+        <input class="button" type="button" value="Update" id="update-button"/>
+    </span>
+    <span>
+        <input class="button" type="button" value="Save As" id="render1-button"/>
+    </span>
+    <span>
+        <!--<label for="upload-input">Load File:</label>-->
+        <input type="file" accept=".dat," id="upload-input" style="display:none;"/>
+        <input class="button" type="button" id="upload-button" value="Load"/>
+        <label for="upload-input" id="uploaded-file-label"></label>
+    </span>
+    <h1>Score Sheet</h1>
     <div class="window">
         <table class="table" id="meta-table">
         </table>
@@ -21,10 +35,16 @@
         <table class="menu" id="h-menu" style="display: none;">
         </table>
     </div>
-    <input type="button" value="Render Page" id="render-button"/>
-
+    <h1>Instructions</h1>
+    <div>
+        <h2>Using the App</h2>
+    </div>
+    <div>
+        <h2>Scorekeeping Generally</h2>
+    </div>
 
     <script src="static/d3/d3.min.js"></script>
+    <script src="static/filesaver/FileSaver_old.min.js"></script>
     <script src="static/js/script.js"></script>
 </body>
 </html>
