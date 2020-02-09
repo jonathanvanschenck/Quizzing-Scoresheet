@@ -7,6 +7,11 @@ td {
     border-collapse: collapse;
 }
 
+.button {
+    width: 80px;
+    height: 80px;
+    background: rgb(100,230,230);
+}
 
 .menu {
     background: rgba(255,255,255,0.0)
@@ -77,9 +82,9 @@ td {
 }
 
 .meta-input {
-    width: 40px;
+    width: 70px;
     background-color: rgba(0,0,0,0.2);
-    text-align: center;
+    text-align: left;
 }
 
 .meta-data {
