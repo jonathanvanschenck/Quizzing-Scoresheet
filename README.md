@@ -37,8 +37,10 @@ Development should take place primarialy in the `index.html`, `static/style.css`
  # Goals for the future
  1) Comment the code!
  2) Add a "how to" into the actual html files
- 3) Create a more "hand-holdy" version of the app, with simplified user interactions. Bascially, it will let a user say; "Quizzer 1 got a correct, then quizzer 8 got an error," and the app will keep track of the question number, 3rd persion bonuses, error outs, etc.
- 4) Make the app look a little better?
- 5) Make some improvements to the save file structure which would be more conducive to interfacing with other quizzing software--like [cbqz](https://github.com/gryphonshafer/cbqz).
- 6) Stress test the app at an actual quiz meet
- 7) Right now, there is no way to assign two states to a single quizzer's interaction with a question. That is, if a quizzer errors, then challenges and is overturned, the app cannot represent both the error and the overturned challenge at the same time. Find a good way to fix this...
+ 3) Add functionality to track question types 
+ 4) Create a more "hand-holdy" version of the app, with simplified user interactions. Bascially, it will let a user say; "Quizzer 1 got a correct, then quizzer 8 got an error," and the app will keep track of the question number, 3rd persion bonuses, error outs, etc.
+ 5) Make the app look a little better?
+ 6) Make some improvements to the save file structure which would be more conducive to interfacing with other quizzing software--like [cbqz](https://github.com/gryphonshafer/cbqz).
+ 7) Stress test the app at an actual quiz meet
+ 8) Right now, there is no way to assign two states to a single quizzer's interaction with a question. That is, if a quizzer errors, then challenges and is overturned, the app cannot represent both the error and the overturned challenge at the same time. Find a good way to fix this...
+ 9) Add some interfacing with offical meet draws, so that coaches could pre-generate scoresheets with the correct quizzer names, team names, room numbers, etc...
