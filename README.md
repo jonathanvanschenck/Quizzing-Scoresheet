@@ -4,8 +4,9 @@ A simple HTML/JS web app to keep score of a quizzing match, intended to the used
 The app is uses d3.js and FileSaver.js as the main workhorses.
 
 ## tl;dr
-Save templates/scoresheet_app.html to your mobile device somehow (email attachments are pretty easy). Then open it with your favorite browser, like Chrome or Firefox (Android's "html viewer" doesn't work yet).
+Save `templates/scoresheet_app.html` to your mobile device somehow (email attachments are pretty easy). Then open it with your favorite browser, like Chrome or Firefox (Android's "html viewer" doesn't work yet).
 
+## How to Use
 Left on questions to award points or errors and right click on questions to award nonstandard events (like fouls and challenges).
 
 When the quiz is done, you can save the data locally into your device using the "Save As" button at the top of the page.
