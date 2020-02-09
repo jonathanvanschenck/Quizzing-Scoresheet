@@ -32,4 +32,4 @@ Development should take place primarialy in the `index.html`, `static/style.css`
 ```bash
  $ python3 convert.py
  ```
- which will insert the relevant `.js` and `.css` source into the `.html` file.
+ which will take `index.html` and insert the relevant `.js` and `.css` source to create the single, isolate-able `templates/scoresheet_app.html` file.
