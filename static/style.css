@@ -19,7 +19,10 @@ td {
     border-collapse: collapse;
 }
 .menu-option {
-    background: rgba(255,255,255,0.8)
+    background: rgba(255,255,255,0.8);
+    width: 100px;
+    height: 40px;
+    text-align: center;
 }
 
 .rotate2 {
@@ -37,10 +40,10 @@ td {
   transform: rotate(-90.0deg);
 }
 .rotate {
-    -webkit-transform: rotate(-180deg);        
-    -moz-transform: rotate(-180deg);            
-    -ms-transform: rotate(-180deg);         
-    -o-transform: rotate(-180deg);         
+    -webkit-transform: rotate(-180deg);
+    -moz-transform: rotate(-180deg);
+    -ms-transform: rotate(-180deg);
+    -o-transform: rotate(-180deg);
     transform: rotate(-180deg);
     writing-mode: vertical-lr;
     padding: 24px;
@@ -69,13 +72,13 @@ td {
 
 .CI-box {
     text-align: center;
-        
+
 }
 
 .start-points {
     text-align: center;
 }
-           
+
 .name-input {
     width: 80px;
     background-color: rgba(0,0,0,0.2);
@@ -104,7 +107,7 @@ td {
     width: 50px;
     text-align: center;
     background-color: rgba(0,0,0,0.2);
-}                    
+}
 .greyout {
     opacity: 0.8;
 }
