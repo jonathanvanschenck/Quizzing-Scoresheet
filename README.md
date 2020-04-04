@@ -1,7 +1,7 @@
 # Quizzing-Scoresheet
 A simple HTML/JS web app to keep score of a quizzing match, intended to the used offline on a mobile device. Based on C&MA Quizzing rules.
 
-The app is uses d3.js and FileSaver.js as the main workhorses.
+The app is uses `jQuery` and `FileSaver.js` as the main workhorses.
 
 ## tl;dr
 Save `templates/scoresheet_app.html` to your mobile device somehow (email attachments are pretty easy). Then open it with your favorite browser, like Chrome or Firefox (Android's "html viewer" doesn't work yet).
@@ -33,11 +33,11 @@ Development should take place primarialy in the `index.html`, `static/style.css`
  $ python3 convert.py
  ```
  which will take `index.html` and insert the relevant `.js` and `.css` source to create the single, isolate-able `templates/scoresheet_app.html` file.
- 
+
  # Goals for the future
  1) Comment the code!
  2) Add a "how to" into the actual html files
- 3) Add functionality to track question types 
+ 3) Add functionality to track question types
  4) Create a more "hand-holdy" version of the app, with simplified user interactions. Bascially, it will let a user say; "Quizzer 1 got a correct, then quizzer 8 got an error," and the app will keep track of the question number, 3rd persion bonuses, error outs, etc.
  5) Make the app look a little better?
  6) Make some improvements to the save file structure which would be more conducive to interfacing with other quizzing software--like [cbqz](https://github.com/gryphonshafer/cbqz).
