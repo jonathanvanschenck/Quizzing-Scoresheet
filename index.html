@@ -7,19 +7,24 @@
 
 <body>
     <h1>Options</h1>
-    <span>
-        <input class="button" type="button" value="Clear" id="clear-button"/>
-        <input class="button" type="button" value="Update" id="update-button"/>
-    </span>
-    <span>
-        <input class="button" type="button" value="Save As" id="render1-button"/>
-    </span>
-    <span>
-        <!--<label for="upload-input">Load File:</label>-->
-        <input type="file" accept=".dat," id="upload-input" style="display:none;"/>
-        <input class="button" type="button" id="upload-button" value="Load"/>
-        <label for="upload-input" id="uploaded-file-label"></label>
-    </span>
+    <div>
+      <span>
+          <input class="button" type="button" value="Clear" id="clear-button"/>
+          <input class="button" type="button" value="Update" id="update-button"/>
+      </span>
+      <span>
+          <input class="button" type="button" value="Save As" id="render1-button"/>
+      </span>
+      <span>
+          <!--<label for="upload-input">Load File:</label>-->
+          <input type="file" accept=".dat," id="upload-input" style="display:none;"/>
+          <input class="button" type="button" id="upload-button" value="Load"/>
+          <label for="upload-input" id="uploaded-file-label"></label>
+      </span>
+    </div>
+    <div>
+      <input type="checkbox" id="use_used" checked/><label for="use_used">Use Greyout?</label>
+    </div>
     <h1>Score Sheet</h1>
     <div class="window">
         <table class="table" id="meta-table">
@@ -38,9 +43,107 @@
     <h1>Instructions</h1>
     <div>
         <h2>Using the App</h2>
+        <p>
+          Left on questions to award points or errors and right click on questions to award nonstandard events (like fouls and challenges).
+        </p>
+        <p>
+          When the quiz is done, you can save the data locally into your device using the "Save As" button at the top of the page.
+        </p>
+        <p>
+          You can load old score sheets using the "Load" button.
+        </p>
     </div>
     <div>
         <h2>Scorekeeping Generally</h2>
+        <h3>TEAM POINTS</h3>
+        <ol type="I">
+          <li>
+            TWENTY POINTS EARNED
+            <ol>
+              <li>A team with all of its registered members present at the scheduled time for quizzing will receive 20 bonus points.</li>
+              <li>Each correct answer is worth 20 points.</li>
+              <li>All toss-up questions are worth 20 points.</li>
+              <li>All bonus questions (1-16) are worth 20 points.</li>
+              <li>An error on a toss-up question results in a bonus question.</li>
+            </ol>
+          </li>
+          <li>
+            TEN POINTS EARNED
+            <ol>
+              <li>When the third, fourth, or fifth quizzer on the same team jumps and correctly answers a question in the same quiz, a 10-point team bonus is awarded. This bonus does not add to the individual’s personal score.</li>
+              <li>All bonus questions (17-xx) are worth 10 points.</li>
+            </ol>
+          </li>
+          <li>
+            TEN POINT DEDUCTIONS
+            <ol>
+              <li>Beginning on question 17, 10 points will be deducted for each team error.</li>
+              <li>Two errors made by the same quizzer will be a 10-point team and individual deduction.</li>
+              <li>The third team error and each subsequent error will constitute a deduction of 10 points from the team score.</li>
+              <li>For every three team fouls, 10 points will be deducted from the team score.</li>
+              <li>Ten points are deducted for a team's second overruled challenge and each subsequent overruled challenge.</li>
+              <li>Never will more than 10 points be deducted from the team score for a single infraction (error, foul, or overruled challenge).</li>
+            </ol>
+          </li>
+          <li>
+            TIE SCORE
+            <ol>
+              <li>In the case of a tie score, quizzing will continue with sets of three additional questions until the tie is broken. Scoring will continue as above. Overtime scoring does not affect individual scoring.</li>
+            </ol>
+          </li>
+          <li>
+            TEAM PLACEMENT POINTS
+            <ol>
+              <li>First Place: 10 points, plus 1 point for each 10 points over 100.</li>
+              <li>Second Place: 5 points, plus 1 point for each 10 points over 60.</li>
+              <li>Third Place: 1 point, plus 1 point for each 10 points over 30.</li>
+              <li>In case of a tie, points are awarded according to the team score at the end of question 20.</li>
+            </ol>
+          </li>
+        </ol>
+        <h3>INDIVIDUAL POINTS</h3>
+        <ol type="I">
+          <li>
+            POINTS EARNED
+            <ol>
+              <li>Each correct answer is worth 20 points.</li>
+              <li>All toss-up questions are worth 20 points.</li>
+              <li>Four correct answers by a quizzer, without error, earns a 10-point individual bonus.</li>
+              <li>No individual points are added for bonus questions answered.</li>
+              <li>No individual points are added for questions answered during overtime</li>
+            </ol>
+          </li>
+          <li>
+            POINTS DEDUCTED
+            <ol>
+              <li>When a quizzer makes a second error within a quiz 10 points are deducted from his individual score. An additional 10 points are deducted for his third error.</li>
+              <li>Three individual fouls will result in a 10 point individual deduction./li>
+              <li>Individual points are not deducted when a quizzer makes an error during error point deductions (questions 17-20) unless it is his second or third individual error.</li>
+              <li>No individual points are deducted for errors on bonus questions.</li>
+              <li>No individual points are deducted for questions error on during overtime.</li>
+            </ol>
+          </li>
+        </ol>
+        <h3>Overall Responsibilities</h3>
+        <ol type="I">
+          <li>
+            Overall responsibilities and tips for scorekeepers:
+            <ol>
+              <li>
+                Keep score legibly and consistently. This makes life easier for the statistician.
+                <ul>
+                  <li>Use a dark pencil so you can cleanly erase corrections.</li>
+                  <li>Avoid any extraneous markings.</li>
+                </ul>
+              </li>
+              <li>Announce the score often. At least every 5 questions is a good rule of thumb.</li>
+              <li>When you announce the score, verify that the coaches have the same score.</li>
+              <li>Fill in each quizzer’s individual score (even if it’s 0), as well as team raw score and team points.</li>
+              <li>Have each coach initial the score sheet after the quiz. Coaches that do not promptly initial the score sheet have “implicitly” verified their team’s and individual’s scores.</li>
+              <li>Have the winning team take the score sheet to the stats room.</li>
+            </ol>
+          </li>
+        </ol>
     </div>
 
     <script src="static/jquery/jquery-3.4.1.min.js"></script>

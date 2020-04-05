@@ -1,7 +1,10 @@
+// Setup function to populate rows in tables
 setup = function() {
+  // Get current date
   var d = new Date();
   var dlist = d.toLocaleDateString().match(/(\d*)[/](\d*)[/](\d*)/);
-  var _wind = $(".window");
+
+  // Create convenient jquery references
   var _mtable = $("#meta-table");
   var _table = $("#table-cont");
   var _pmenu = $("#primary-menu");
@@ -9,11 +12,18 @@ setup = function() {
   var _spmenu = $("#sp-menu");
   var _hmenu = $("#h-menu");
 
+  // === Create Meta Table ===
   // meta data setup
-  var data_meta_h = [{label:"Date:",l1: "a"},{label:"PlaceHolder",l1: "b"},
-  {label:"",l1: "g"},{label:"Name",l1: "h"},
-  {label:"",l1: "c"},
-  {label:"Team",l1: "d"},{label:"Score",l1: "e"},{label:"Points",l1: "f"}]
+  let data_meta_h = [
+    {label:"Date:",l1: "a"},
+    {label:"PlaceHolder",l1: "b"},
+    {label:"",l1: "g"},
+    {label:"Name",l1: "h"},
+    {label:"",l1: "c"},
+    {label:"Team",l1: "d"},
+    {label:"Score",l1: "e"},
+    {label:"Points",l1: "f"}
+  ]
 
   // construct meta table
   let row = $('<tr>').toggleClass("meta-header-row", true)
@@ -345,7 +355,7 @@ setup = function() {
       let tn = q.attr("id").match(/([ABC])[HF12345][-]\d*/)[1];
       let qn = q.attr("id").match(/[ABC]([HF12345])[-]\d*/)[1];
       let ques_num = q.attr("id").match(/[ABC][HF12345][-](\d*)/)[1];
-      if (q.text() === "TF") {
+      if (q.text() === "TF") { //
         $(".question").filter(function () {
           let idm = $(this).attr("id").match(/([ABC])[12345][-](\d*)/);
           if (!!idm) {
@@ -420,8 +430,11 @@ setup = function() {
       $(".active").toggleClass("active",false);
       $('.menu').css('display', 'none');
       update_meta();
+      update_used();
     });
 
+    // Set select all functionality
+    $("input[type='text']").on("click", function() { this.select(); });
 
 
     sort_teams = function (a , b) {
@@ -515,6 +528,58 @@ setup = function() {
     $("#"+tn+qn+"-d").text(isum);
   }
 
+  update_used = function() {
+    if (document.getElementById('use_used').checked) {
+      for (let ques_n = 1; ques_n < 16; ques_n++) {
+        let filled = false;
+        // Loop through question rows
+        for (let tn of ["A", "B", "C"]) {
+          for (let quiz_n of [1,2,3,4,5]) {
+            let text = $("#"+tn+quiz_n+"-"+ques_n).text();
+            filled = filled || !(text === "" || text === "F" || text === "F-10");
+          }
+        }
+        // Loop through again to set "used" state
+        for (let tn of ["A", "B", "C"]) {
+          for (let quiz_n of ["H","F","1","2","3","4","5"]) {
+            $("#"+tn+quiz_n+"-"+ques_n).toggleClass("used",filled);
+          }
+        }
+      };
+      for (let ques_n = 16; ques_n < 24; ques_n++) {
+        let has_correct = false;
+        // Loop through question rows for corrects
+        for (let tn of ["A", "B", "C"]) {
+          for (let quiz_n of [1,2,3,4,5]) {
+            let text = $("#"+tn+quiz_n+"-"+ques_n).text();
+            has_correct = has_correct || text === "20" || text === "30";
+          }
+        }
+        // Loop through again to set corrects state
+        for (let tn of ["A", "B", "C"]) {
+          for (let quiz_n of ["H","F","1","2","3","4","5"]) {
+            $("#"+tn+quiz_n+"-"+ques_n).toggleClass("used",has_correct);
+          }
+        }
+        // Loop through question rows for filled
+        for (let tn of ["A", "B", "C"]) {
+          let filled = false;
+          for (let quiz_n of [1,2,3,4,5]) {
+            let text = $("#"+tn+quiz_n+"-"+ques_n).text();
+            filled = filled || !(text === "" || text === "F" || text === "F-10");
+          }
+          if (filled) {
+            for (let quiz_n of ["H","F","1","2","3","4","5"]) {
+              $("#"+tn+quiz_n+"-"+ques_n).addClass("used")
+            }
+          }
+        }
+      };
+    } else {
+      $("td").toggleClass("used",false)
+    }
+  };
+
   update_meta = function() {
     let team_list = [];
     $('.team-input').each(function (i) {
@@ -562,6 +627,7 @@ setup = function() {
       }
     }
     update_meta();
+    update_used();
   }
 
   padl = function (str,pval,num) {
@@ -639,6 +705,7 @@ setup = function() {
     }, 1000); // ugly, but functional
   }
 
+  // Attach button functions
   $("#clear-button").on("click", function () {
     if (confirm("Are you sure you want to clear this form?")) {
       clear();
@@ -648,4 +715,6 @@ setup = function() {
   $("#render1-button").on("click", () => render('dat'));
   $("#upload-button").on("click", () => document.getElementById("upload-input").click());
   $("#upload-input").on("change", function () { load_file(this); });
+  $("#use_used").on("change", () => update_used());
+
   setup();

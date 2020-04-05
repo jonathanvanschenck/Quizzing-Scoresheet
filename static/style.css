@@ -1,5 +1,6 @@
 .window {
-    background: #bbbbbb;
+    /* background: #bbbbbb; */
+    background: rgb(230,230,230);
 }
 
 td {
@@ -118,4 +119,9 @@ td {
 
 .empty {
     opacity: 0.0;
+}
+
+.used {
+  background: rgb(170,170,170);
+  /* opacity: 0.5; */
 }
