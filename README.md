@@ -6,8 +6,7 @@ The app is uses `jQuery` and `FileSaver.js` as the main workhorses.
 ## tl;dr
 Save `templates/scoresheet_app.html` to your mobile device somehow (email
 attachments are pretty easy, or you can open [this link](https://raw.githubusercontent.com/jonathanvanschenck/Quizzing-Scoresheet/master/templates/scoresheet_app.html) on
-your device, then from settings click "Save Page As ... " and save it as an html
-file). Then open it with your favorite browser, like Chrome or Firefox (Android's
+your device, then from settings click the download button to save a copy locally on your device). Then open it with your favorite browser, like Chrome or Firefox (Android's
 "html viewer" doesn't work yet).
 
 ## How to Use
