@@ -35,7 +35,6 @@ Development should take place primarily in the `templates/*.html`, `static/style
 
 # Goals for the future
  1) Keep commenting the code!
- 2) Add functionality to track question types
  3) Add `python-flask` based web service as an example of online usage
  5) Make the app look a little better?
  7) Stress test the app at an actual quiz meet
