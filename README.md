@@ -1,11 +1,11 @@
 # Quizzing-Scoresheet
 A simple HTML/JS web app to keep score of a quizzing match, intended to the used offline on a mobile device. Based on C&MA Quizzing rules.
 
-The app is uses `jQuery` and `FileSaver.js` as the main workhorses.
+The app is uses `jQuery`, `socket.io` and `FileSaver.js` as the main workhorses.
 
 ## tl;dr
-Save `templates/scoresheet_app.html` to your mobile device somehow (email
-attachments are pretty easy, or you can open [this link](https://raw.githubusercontent.com/jonathanvanschenck/Quizzing-Scoresheet/master/templates/scoresheet_app.html) on
+Save `html/Quizzing_Scoresheet_offline.html` to your mobile device somehow (email
+attachments are pretty easy, or you can open [this link](https://raw.githubusercontent.com/jonathanvanschenck/Quizzing-Scoresheet/master/html/Quizzing_Scoresheet_offline.html) on
 your device, then from settings click the download button to save a copy locally on your device). Then open it with your favorite browser, like Chrome or Firefox (Android's
 "html viewer" doesn't work yet).
 
@@ -47,3 +47,11 @@ Development should take place primarialy in the `index.html`, `static/style.css`
  7) Stress test the app at an actual quiz meet
  8) Right now, there is no way to assign two states to a single quizzer's interaction with a question. That is, if a quizzer errors, then challenges and is overturned, the app cannot represent both the error and the overturned challenge at the same time. Find a good way to fix this...
  9) Add some interfacing with offical meet draws, so that coaches could pre-generate scoresheets with the correct quizzer names, team names, room numbers, etc...
+
+# Using Online
+
+## `socket.io` Emit Functions
+On the server side, implement the following functions:
+* .on('request_room') => .emit('join_room', {'room': ...})
+* .on('echo', msg) => .emit('log', msg)
+* .on('broadcast_action', msg) => .emit('update_table', msg, broadcast = true, room = msg.room)
