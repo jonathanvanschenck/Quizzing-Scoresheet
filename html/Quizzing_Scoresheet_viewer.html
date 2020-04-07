@@ -64,6 +64,9 @@
         .TeamC {
             background: rgb(150,150,255);
         }
+        .TeamD {
+            background: rgb(255,150,255);
+        }
         
         .bar {
         
@@ -74,6 +77,10 @@
             vertical-align: middle;
             width: 100px;
             height: 20px;
+        }
+        .question-type {
+            text-align: center;
+            vertical-align: middle;
         }
         
         .CI-box {
@@ -166,6 +173,8 @@
         </table>
         <table class="menu" id="h-menu" style="display: none;">
         </table>
+        <table class="menu" id="qt-menu" style="display: none;">
+        </table>
     </div>
     <!-- From: jquery-3.4.1.min.js-->
     <script>
@@ -205,6 +214,7 @@
         var _smenu = $("#secondary-menu");
         var _spmenu = $("#sp-menu");
         var _hmenu = $("#h-menu");
+        var _qtmenu = $("#qt-menu");
         
         // Cell creation data
         var data_meta_h = [ // Meta Table
@@ -244,6 +254,22 @@
           {content:"CA", value:"CA"},
           {content:"CO", value:"CO"},
           {content:"CO-10", value:"CO-10"}
+        ];
+        var data_qtmenu = [ // Question Types
+          [{content:"__", value:""}],
+          [{content:"INT", value:"INT", type:"I"}],
+          [{content:"MA", value:"MA", type:"MA"}],
+          [{content:"CR", value:"CR", type:"R"},
+          {content:"CVR", value:"CVR", type:"R"},
+          {content:"CRMA", value:"CRMA", type:"R"},
+          {content:"CVRMA", value:"CVRMA", type:"R"}],
+          [{content:"QT", value:"QT", type:"Q"},
+          {content:"Q2V", value:"Q2V", type:"Q"}],
+          [{content:"FTV", value:"FTV", type:"F"},
+          {content:"F2V", value:"F2V", type:"F"},
+          {content:"FT", value:"QT", type:"F"},
+          {content:"FTN", value:"CR", type:"F"}],
+          [{content:"SIT", value:"SIT", type:"S"}]
         ];
         var data_questions = [ // Questions Table
           {Q:"1",visible:true},
@@ -388,6 +414,18 @@
               )
             )
           });
+          // === Question Types Table ===
+          // Create cells
+          data_qtmenu.map(d => {
+            let r = $("<tr>").toggleClass("menu-row", true)
+            for (let dd of d) {
+              r.append(
+                $("<td>").toggleClass("menu-option", true)
+                .text(dd.content).data(dd)
+              );
+            };
+            _qtmenu.append(r);
+          });
         
           // === Headers Table ===
           // Create cells
@@ -498,6 +536,33 @@
             _table.append(r);
           };
         
+          // === Question Types Setup ===
+          t = "D";
+          r = $("<tr>").addClass("Team"+t+" bracket-qt");
+          r.append( // Label Box
+            $("<td>").addClass("Team"+t+" bar")
+            .attr("id", t + "F-b")
+            .css("text-align","right")
+            .attr("colspan","3")
+            .text("Q Types:")
+          ).append( // Empty Box
+            $("<td>").addClass("Team"+t)
+            .attr("id", t + "F-c")
+            .css("display","none")
+          ).append( // Empty Box
+            $("<td>").addClass("Team"+t)
+            .attr("id", t + "F-d")
+            .css("display","none")
+          )
+          // Question headers
+          data_questions.map(d => {
+            r.append(
+              $("<td>").addClass("Team"+t+" question-type Que-"+d.Q)
+              .attr("id", t+"F-"+d.Q)
+              .css("display", (d.visible && Number(d.Q) < 21) ? "" : "none")
+            );
+          });
+          _table.append(r);
           // === Update all cells ===
           update_all();
         };
@@ -576,14 +641,33 @@
             }
           });
         
+          $('.question-type').on("click", function(event) {
+            let cval = $(".active").length;
+            $('.menu').css('display', 'none');
+            if (cval == 1) {
+              $(".active").toggleClass("active",false);
+            } else {
+              $(".active").toggleClass("active",false);
+        
+              let self = $(this);
+              self.toggleClass("active",true);
+              let q_num = self.attr("id").match(/DF[-](\d*)/)[1]
+        
+              _qtmenu.css('position', 'absolute')
+              .css('left', event.pageX - (0.5 * _qtmenu.width() * (q_num > 16)) + "px")
+              .css('top', (event.pageY - _qtmenu.height()) + "px")
+              .css('display', 'block');
+            }
+          });
+        
           // Menu Option click setup
           $('.menu-option').on("click", function(event) {
             let _data = $(this).data();
             let q = $('.active');
             let q_id = q.attr("id");
-            let tn = q_id.match(/([ABC])[HF12345][-]\d*/)[1];
-            let qn = q_id.match(/[ABC]([HF12345])[-]\d*/)[1];
-            let ques_num = q_id.match(/[ABC][HF12345][-](\d*)/)[1];
+            let tn = q_id.match(/([ABCD])[HF12345][-]\d*/)[1];
+            let qn = q_id.match(/[ABCD]([HF12345])[-]\d*/)[1];
+            let ques_num = q_id.match(/[ABCD][HF12345][-](\d*)/)[1];
             if (q.text() === "TF") { //
               $(".question").filter(function () {
                 let idm = $(this).attr("id").match(/([ABC])[12345][-](\d*)/);
@@ -652,7 +736,9 @@
             } else {
               q.text(_data.value);
             }
-            update_score(tn);
+            if (!(tn === "D")) {
+              update_score(tn);
+            }
             if (!( qn==="H" || qn==="F")) {
               update_CI(tn,qn);
             }

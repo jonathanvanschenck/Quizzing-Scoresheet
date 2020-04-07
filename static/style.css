@@ -59,6 +59,9 @@ td {
 .TeamC {
     background: rgb(150,150,255);
 }
+.TeamD {
+    background: rgb(255,150,255);
+}
 
 .bar {
 
@@ -69,6 +72,10 @@ td {
     vertical-align: middle;
     width: 100px;
     height: 20px;
+}
+.question-type {
+    text-align: center;
+    vertical-align: middle;
 }
 
 .CI-box {

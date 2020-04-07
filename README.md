@@ -28,7 +28,7 @@ Development should take place primarily in the `templates/*.html`, `static/style
 
 ## `socket.io` Emit Functions
  On the server side, implement the following functions:
- * `.on('request_room')` => `.emit('join_room', {'room': ...})``
+ * `.on('request_room')` => `.emit('join_room', {'room': ...})`
  * `.on('echo', msg)` => `.emit('log', msg)`
  * `.on('broadcast_action', msg)` => `.emit('update_table', msg, broadcast = true, room = msg.room)`
 
