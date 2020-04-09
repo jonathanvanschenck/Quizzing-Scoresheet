@@ -1,6 +1,7 @@
-interactive = false;
+const interactive = false;
+const use_socket = true;
 
-clear(interactive);
+clear(interactive, use_socket);
 
 // Handle button functions
 $("#clear-button").remove();
@@ -10,24 +11,25 @@ $("#upload-button").remove();
 $("#upload-input").remove();
 $("#use_used").on("change", () => update_used());
 
+var room = '1';
+
 // Attach Socket.io functionality
 $(document).ready(function () {
   let namespace = "/test";
   var socket = io(namespace);
 
   socket.on('connect', function() {
-    socket.emit('request_room', {})
+    socket.emit('join', {room: room, admin: false})
   });
-  socket.on('join_room', function(msg) {
-    room = msg.room;
-  });
+
   socket.on('log', function(msg) {
     console.log(msg);
   });
-  socket.on('update_table', msg) {
+  socket.on('update_table', function(msg) {
     table_from_text(msg.table);
-  };
+    update_all();
+  });
   broadcast_action = function (msg) {
-    alert("Cannot Broadcast from viewer");
+    alert("Cannot Broadcast from viewer")
   }
 });

@@ -144,7 +144,7 @@
     <div>
       <span>
           <input class="button" type="button" value="Clear" id="clear-button"/>
-          <input class="button" type="button" value="Update" id="update-button"/>
+          <input class="button" type="button" value="Update" id="update-button" style="display: none;"/>
       </span>
       <span>
           <input class="button" type="button" value="Save As" id="render1-button"/>
@@ -179,15 +179,31 @@
     <h1>Instructions</h1>
     <div>
         <h2>Using the App</h2>
-        <p>
-          Left on questions to award points or errors and right click on questions to award nonstandard events (like fouls and challenges).
-        </p>
-        <p>
-          When the quiz is done, you can save the data locally into your device using the "Save As" button at the top of the page.
-        </p>
-        <p>
-          You can load old score sheets using the "Load" button.
-        </p>
+      <p>
+        Left click on questions to award points or errors and right click on questions to award nonstandard events (like fouls and challenges).
+      </p>
+      <p>
+        Left click on the starting 20 points to modify them.
+      </p>
+      <p>
+        Left click on the question types boxes to track question types.
+      </p>
+      <p>
+        Left click on the question number above a particular team to award no-jumps or team fouls.
+      </p>
+      <p>
+        Most actions can be undone by re-clicking on the mistake and selecting the __ option.
+      </p>
+      <p>
+        When the quiz is done, you can save the data locally into your device using the "Save As" button at the top of the page.
+      </p>
+      <p>
+        You can load old score sheets using the "Load" button.
+      </p>
+      <p>
+        You can click the "Clear" button to make a new score sheet, or just reload the page. <b>WARNING: THIS ACTION
+        CANNOT BE UNDONE</b>
+      </p>
     </div>
     <div>
         <h2>Scorekeeping Generally</h2>
@@ -854,6 +870,11 @@
         
             // broadcast action
             if (use_socket) {
+              // console.log({
+              //   cell:q_id,
+              //   value:_data.value,
+              //   data:'Broadcasted'
+              // });
               broadcast_action({
                 cell:q_id,
                 value:_data.value,
@@ -1052,10 +1073,10 @@
           update_used();
         }
         
-        clear = function(interactive) {
+        clear = function(interactive, use_socket) {
           $("tr").remove();
           populate_table();
-          if (interactive) { attach_click_events(); };
+          if (interactive) { attach_click_events(use_socket); };
           $("#uploaded-file-label").text("");
         };
         
@@ -1118,7 +1139,7 @@
           saveAs(blob, get_input_value($("#input-MH-b"))+"-"+padl(get_input_value($("#input-MC-b")),"0",3)+"."+ext);
         }
         
-        load_file = function(input, interactive) {
+        load_file = function(input, interactive, use_socket) {
           // Load a rendered file into the tables
           let file = input.files[0];
           let ext = file.name.split('').reverse().join('')
@@ -1140,7 +1161,7 @@
             table_from_text(rows);
           };
         
-          clear(interactive);
+          clear(interactive, use_socket);
           reader.readAsText(file);
           $("#uploaded-file-label").text("From File: "+file.name);
           document.getElementById("upload-input").value = '';
@@ -1152,43 +1173,44 @@
     <!-- From: online.js-->
     <script>
         const interactive = true;
+        const use_socket = true;
         
-        clear(interactive);
+        clear(interactive, use_socket);
         
         // Attach button functions
         $("#clear-button").on("click", function () {
           if (confirm("Are you sure you want to clear this form?")) {
-            clear(interactive);
+            clear(interactive, use_socket);
           } else {}
         });
         $("#update-button").on("click", () => update_all());
-        $("#render1-button").on("click", () => render('dat', interactive));
+        $("#render1-button").on("click", () => render('dat'));
         $("#upload-button").on("click", () => document.getElementById("upload-input").click());
-        $("#upload-input").on("change", function () { load_file(this); });
+        $("#upload-input").on("change", function () { load_file(this, interactive, use_socket); });
         $("#use_used").on("change", () => update_used());
         
         
         // Attach Socket.io functionality
-        var room = '';
+        var room = '1';
         
         $(document).ready(function () {
           let namespace = "/test";
           var socket = io(namespace);
         
           socket.on('connect', function() {
-            socket.emit('request_room', {})
+            socket.emit('join', {room: room, admin: true})
           });
-          socket.on('join_room', function(msg) {
-            room = msg.room;
-          });
+        
           socket.on('log', function(msg) {
             console.log(msg);
           });
-          socket.on('update_table', msg) {
+          socket.on('update_table', function(msg) {
             console.log("Got Action "+msg.value+" @ "+msg.cell);
-          };
+          });
           broadcast_action = function (msg) {
-            socket.emit('broadcast_action', msg)
+            let nmsg = msg;
+            nmsg.room = room;
+            socket.emit('broadcast_action', nmsg)
           }
         });
     </script>

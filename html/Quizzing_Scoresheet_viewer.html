@@ -144,7 +144,7 @@
     <div>
       <span>
           <input class="button" type="button" value="Clear" id="clear-button"/>
-          <input class="button" type="button" value="Update" id="update-button"/>
+          <input class="button" type="button" value="Update" id="update-button" style="display: none;"/>
       </span>
       <span>
           <input class="button" type="button" value="Save As" id="render1-button"/>
@@ -749,6 +749,11 @@
         
             // broadcast action
             if (use_socket) {
+              // console.log({
+              //   cell:q_id,
+              //   value:_data.value,
+              //   data:'Broadcasted'
+              // });
               broadcast_action({
                 cell:q_id,
                 value:_data.value,
@@ -947,10 +952,10 @@
           update_used();
         }
         
-        clear = function(interactive) {
+        clear = function(interactive, use_socket) {
           $("tr").remove();
           populate_table();
-          if (interactive) { attach_click_events(); };
+          if (interactive) { attach_click_events(use_socket); };
           $("#uploaded-file-label").text("");
         };
         
@@ -1013,7 +1018,7 @@
           saveAs(blob, get_input_value($("#input-MH-b"))+"-"+padl(get_input_value($("#input-MC-b")),"0",3)+"."+ext);
         }
         
-        load_file = function(input, interactive) {
+        load_file = function(input, interactive, use_socket) {
           // Load a rendered file into the tables
           let file = input.files[0];
           let ext = file.name.split('').reverse().join('')
@@ -1035,7 +1040,7 @@
             table_from_text(rows);
           };
         
-          clear(interactive);
+          clear(interactive, use_socket);
           reader.readAsText(file);
           $("#uploaded-file-label").text("From File: "+file.name);
           document.getElementById("upload-input").value = '';
@@ -1046,9 +1051,10 @@
     </script>
     <!-- From: viewer.js-->
     <script>
-        interactive = false;
+        const interactive = false;
+        const use_socket = true;
         
-        clear(interactive);
+        clear(interactive, use_socket);
         
         // Handle button functions
         $("#clear-button").remove();
@@ -1058,25 +1064,26 @@
         $("#upload-input").remove();
         $("#use_used").on("change", () => update_used());
         
+        var room = '1';
+        
         // Attach Socket.io functionality
         $(document).ready(function () {
           let namespace = "/test";
           var socket = io(namespace);
         
           socket.on('connect', function() {
-            socket.emit('request_room', {})
+            socket.emit('join', {room: room, admin: false})
           });
-          socket.on('join_room', function(msg) {
-            room = msg.room;
-          });
+        
           socket.on('log', function(msg) {
             console.log(msg);
           });
-          socket.on('update_table', msg) {
+          socket.on('update_table', function(msg) {
             table_from_text(msg.table);
-          };
+            update_all();
+          });
           broadcast_action = function (msg) {
-            alert("Cannot Broadcast from viewer");
+            alert("Cannot Broadcast from viewer")
           }
         });
     </script>

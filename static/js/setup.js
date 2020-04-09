@@ -548,6 +548,11 @@ attach_click_events = function(use_socket) {
 
     // broadcast action
     if (use_socket) {
+      // console.log({
+      //   cell:q_id,
+      //   value:_data.value,
+      //   data:'Broadcasted'
+      // });
       broadcast_action({
         cell:q_id,
         value:_data.value,
@@ -746,10 +751,10 @@ update_all = function() {
   update_used();
 }
 
-clear = function(interactive) {
+clear = function(interactive, use_socket) {
   $("tr").remove();
   populate_table();
-  if (interactive) { attach_click_events(); };
+  if (interactive) { attach_click_events(use_socket); };
   $("#uploaded-file-label").text("");
 };
 
@@ -812,7 +817,7 @@ render = function(ext) {
   saveAs(blob, get_input_value($("#input-MH-b"))+"-"+padl(get_input_value($("#input-MC-b")),"0",3)+"."+ext);
 }
 
-load_file = function(input, interactive) {
+load_file = function(input, interactive, use_socket) {
   // Load a rendered file into the tables
   let file = input.files[0];
   let ext = file.name.split('').reverse().join('')
@@ -834,7 +839,7 @@ load_file = function(input, interactive) {
     table_from_text(rows);
   };
 
-  clear(interactive);
+  clear(interactive, use_socket);
   reader.readAsText(file);
   $("#uploaded-file-label").text("From File: "+file.name);
   document.getElementById("upload-input").value = '';
